@@ -2,6 +2,16 @@ import 'package:bytebank/components/editor.dart';
 import 'package:bytebank/models/transferencia.dart';
 import 'package:flutter/material.dart';
 
+const _appBarTitulo = 'Transferencia Cadastro';
+
+const _rotuloNumeroConta = 'Numero da conta';
+const _rotuloValor = 'Valor';
+
+const _dicaNumeroConta = 'Numero da conta';
+const _dicaValor = 'Valor';
+
+const _buttonText = 'Confirmar';
+
 class TransferenciaForm extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => TransferenciaFormState();
@@ -15,24 +25,24 @@ class TransferenciaFormState extends State<TransferenciaForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Cadastro')
+          title: Text(_appBarTitulo)
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Editor(
               controlador: _controladorCampoNumeroConta,
-              rotulo: 'Numero da conta',
-              dica: '0000',
+              rotulo: _rotuloNumeroConta,
+              dica: _dicaNumeroConta,
             ),
             Editor(
               controlador: _controladorCampoValor,
-              rotulo: 'Valor',
-              dica: '0,00',
+              rotulo: _rotuloValor,
+              dica: _dicaValor,
               icone: Icons.monetization_on,
             ),
             RaisedButton(
-              child: Text('Confirmar'),
+              child: Text(_buttonText),
               onPressed: () => _criarTranferencia(context),
             )
           ],
@@ -45,11 +55,7 @@ class TransferenciaFormState extends State<TransferenciaForm> {
     final int numeroConta = int.tryParse(_controladorCampoNumeroConta.text);
     final double valor = double.tryParse(_controladorCampoValor.text);
 
-    if (numeroConta != null && valor != null) {
-      final transferencia = Tranferencia(valor, numeroConta);
-      debugPrint('criando transferencia...');
-      debugPrint(transferencia.toString());
-      Navigator.pop(context, transferencia);
-    }
+    if (numeroConta != null && valor != null)
+      Navigator.pop(context, Tranferencia(valor, numeroConta));
   }
 }
