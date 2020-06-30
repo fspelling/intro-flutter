@@ -2,7 +2,7 @@ import 'package:bytebank/models/transferencia.dart';
 import 'package:bytebank/screens/transferencia/formulario.dart';
 import 'package:flutter/material.dart';
 
-const _appBarTitulo = 'Transferencias2';
+const _appBarTitulo = 'Transferencias';
 
 class ListaTranferencia extends StatefulWidget {
   final List<Tranferencia> _tranferencias = List();
@@ -39,7 +39,7 @@ class ListaTranferenciaState extends State<ListaTranferencia> {
     );
   }
 
-  _addTranferencia(Transferencia transferenciaRecebida) {
+  _addTranferencia(Tranferencia transferenciaRecebida) {
     if(transferenciaRecebida != null) {
       setState(() {
         widget._tranferencias.add(transferenciaRecebida);
