@@ -1,6 +1,6 @@
-# bytebank_app
+# bytebank
 
-A new Flutter project.
+A new Bytebank project.
 
 ## Getting Started
 

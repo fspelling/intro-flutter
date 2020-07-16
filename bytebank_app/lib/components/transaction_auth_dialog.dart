@@ -1,38 +1,48 @@
 import 'package:flutter/material.dart';
 
-class TransactionAuthDialog extends StatelessWidget{
-  final TextEditingController _controller = TextEditingController();
+const Key transactionAuthDialogTextFieldPasswordKey =
+    Key('transactionAuthDialogTextFieldPassword');
+
+class TransactionAuthDialog extends StatefulWidget {
   final Function(String password) onConfirm;
 
-  TransactionAuthDialog({ @required this.onConfirm });
+  TransactionAuthDialog({
+    @required this.onConfirm,
+  });
+
+  @override
+  _TransactionAuthDialogState createState() => _TransactionAuthDialogState();
+}
+
+class _TransactionAuthDialogState extends State<TransactionAuthDialog> {
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text('Authenticate'),
       content: TextField(
-        controller: _controller,
-        keyboardType: TextInputType.number,
+        key: transactionAuthDialogTextFieldPasswordKey,
+        controller: _passwordController,
         obscureText: true,
         maxLength: 4,
+        decoration: InputDecoration(border: OutlineInputBorder()),
         textAlign: TextAlign.center,
-        decoration: InputDecoration(
-          border: OutlineInputBorder()
-        ),
+        keyboardType: TextInputType.number,
         style: TextStyle(fontSize: 64, letterSpacing: 24),
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('cancel'),
           onPressed: () => Navigator.pop(context),
+          child: Text('Cancel'),
         ),
         FlatButton(
-          child: Text('confirm'),
           onPressed: () {
-            onConfirm(_controller.text);
-            Navigator.of(context).pop();
+            widget.onConfirm(_passwordController.text);
+            Navigator.pop(context);
           },
-        )
+          child: Text('Confirm'),
+        ),
       ],
     );
   }

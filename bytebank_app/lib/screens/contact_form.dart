@@ -1,40 +1,48 @@
-import 'package:bytebank_app/database/dao/contact_dao.dart';
-import 'package:bytebank_app/models/contact.dart';
+import 'package:bytebank/database/dao/contact_dao.dart';
+import 'package:bytebank/models/contact.dart';
+import 'package:bytebank/widgets/app_dependencies.dart';
 import 'package:flutter/material.dart';
 
-class ContactForm extends StatelessWidget {
+class ContactForm extends StatefulWidget {
+
+  @override
+  _ContactFormState createState() => _ContactFormState();
+}
+
+class _ContactFormState extends State<ContactForm> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _accountNumberController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controllerFullName = TextEditingController();
-    final TextEditingController _controllerAccount = TextEditingController();
-    final ContactDao _dao = ContactDao();
-
+    final dependencies = AppDependencies.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Contact'),
+        title: Text('New contact'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
             TextField(
-              controller: _controllerFullName,
+              controller: _nameController,
               decoration: InputDecoration(
-                  labelText: 'Full Name'
+                labelText: 'Full name',
               ),
               style: TextStyle(
-                  fontSize: 24.0
+                fontSize: 24.0,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: TextField(
-                controller: _controllerAccount,
+                controller: _accountNumberController,
                 decoration: InputDecoration(
-                    labelText: 'Acount'
+                  labelText: 'Account number',
                 ),
                 style: TextStyle(
-                    fontSize: 24.0
+                  fontSize: 24.0,
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -44,20 +52,25 @@ class ContactForm extends StatelessWidget {
               child: SizedBox(
                 width: double.maxFinite,
                 child: RaisedButton(
+                  child: Text('Create'),
                   onPressed: () {
-                    final String fullName = _controllerFullName.text;
-                    final int account = int.tryParse(_controllerAccount.text);
-                    final Contact contact = Contact(0, fullName, account);
-
-                    _dao.save(contact).then((id) => Navigator.pop(context));
+                    final String name = _nameController.text;
+                    final int accountNumber =
+                        int.tryParse(_accountNumberController.text);
+                    final Contact newContact = Contact(0, name, accountNumber);
+                    _save(dependencies.contactDao, newContact, context);
                   },
-                  child: Text('Confirmar'),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
     );
+  }
+
+  void _save(ContactDao contactDao, Contact newContact, BuildContext context) async {
+    await contactDao.save(newContact);
+    Navigator.pop(context);
   }
 }

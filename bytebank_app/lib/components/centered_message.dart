@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 
-class CenturedMessage extends StatelessWidget {
+class CenteredMessage extends StatelessWidget {
   final String message;
   final IconData icon;
   final double iconSize;
   final double fontSize;
 
-  CenturedMessage(this.message, { this.icon, this.iconSize = 64, this.fontSize = 24 });
+  CenteredMessage(
+    this.message, {
+    this.icon,
+    this.iconSize = 64,
+    this.fontSize = 24,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Visibility(
             child: Icon(
@@ -27,7 +33,7 @@ class CenturedMessage extends StatelessWidget {
               message,
               style: TextStyle(fontSize: fontSize),
             ),
-          )
+          ),
         ],
       ),
     );

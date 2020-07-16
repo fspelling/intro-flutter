@@ -1,65 +1,83 @@
-import 'package:bytebank_app/screens/transaction_list.dart';
+import 'package:bytebank/database/dao/contact_dao.dart';
+import 'package:bytebank/screens/contacts_list.dart';
+import 'package:bytebank/screens/transactions_list.dart';
 import 'package:flutter/material.dart';
 
-import 'contacts_list.dart';
-
 class Dashboard extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Dashboard'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('images/bytebank_logo.png'),
-          ),
-          Container(
-            height: 120,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _featureItem(
-                  'Transfer',
-                  Icons.monetization_on,
-                  onClick: () => _showScreenTransfer(context),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset('images/bytebank_logo.png'),
                 ),
-                _featureItem(
-                  'Transaction Feed',
-                  Icons.transfer_within_a_station,
-                  onClick: () => _showScreenTransferFeed(context),
+                Container(
+                  height: 120,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      FeatureItem(
+                        'Transfer',
+                        Icons.monetization_on,
+                        onClick: () => _showContactsList(context),
+                      ),
+                      FeatureItem(
+                        'Transaction Feed',
+                        Icons.description,
+                        onClick: () => _showTransactionsList(context),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 
-  _showScreenTransfer(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ContactsList()
-    ));
+  void _showContactsList(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ContactsList(),
+      ),
+    );
   }
 
-  _showScreenTransferFeed(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => TransactionList()
-    ));
+  _showTransactionsList(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => TransactionsList(),
+      ),
+    );
   }
 }
 
-class _featureItem extends StatelessWidget {
+class FeatureItem extends StatelessWidget {
   final String name;
   final IconData icon;
   final Function onClick;
 
-  _featureItem(this.name, this.icon, { @required this.onClick }): assert(icon != null), assert(onClick != null);
+  FeatureItem(
+    this.name,
+    this.icon, {
+    @required this.onClick,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +88,7 @@ class _featureItem extends StatelessWidget {
         child: InkWell(
           onTap: () => onClick(),
           child: Container(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             width: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,10 +102,10 @@ class _featureItem extends StatelessWidget {
                 Text(
                   name,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0
+                    color: Colors.white,
+                    fontSize: 16.0,
                   ),
-                ),
+                )
               ],
             ),
           ),
